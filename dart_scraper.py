@@ -2,7 +2,6 @@ from __future__ import print_function, unicode_literals
 
 import os
 import re
-import configparser
 import dart_fss as dart
 from PyInquirer import prompt
 from halo import Halo
