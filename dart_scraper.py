@@ -7,6 +7,15 @@ import dart_fss as dart
 from PyInquirer import prompt
 from halo import Halo
 
+qst_api = [
+    {
+        'type': 'input',
+        'name': 'key',
+        'message': 'API KEY'
+    }
+]
+
+
 qst_nm = [
     {
         'type': 'input',
@@ -48,12 +57,17 @@ welcome = '''
                                              /_/                 
 '''
 
+
+def check_api_key():
+    try:
+        _ = dart.crp.DartAuth().api_key
+    except ValueError:
+        asn_api = prompt(qst_api)
+        api_key = asn_api['key']
+        dart.dart_set_api_key(api_key)
+
+
 if __name__=='__main__':
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    dart_api_key = config['DART']['DART_API_KEY']
-    if dart_api_key != 'NONE':
-        dart.dart_set_api_key(api_key=dart_api_key)
     print(welcome)
     print('by Sungwoo Jo')
     spinner = Halo(text='Loading', spinner='dots')
@@ -61,8 +75,9 @@ if __name__=='__main__':
     crp_list = dart.get_crp_list()
     spinner.stop()
 
-    ans = prompt(qst_nm)
+    check_api_key()
 
+    ans = prompt(qst_nm)
     crp_nm = ans['crp_nm']
     crp_list = crp_list.find_by_name(crp_nm)
 
