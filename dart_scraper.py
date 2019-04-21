@@ -2,9 +2,12 @@ from __future__ import print_function, unicode_literals
 
 import os
 import re
+import sys
+import multiprocessing as mp
 import dart_fss as dart
 from PyInquirer import prompt
 from halo import Halo
+
 
 qst_api = [
     {
@@ -63,10 +66,14 @@ def check_api_key():
     except ValueError:
         asn_api = prompt(qst_api)
         api_key = asn_api['key']
+        api_key = api_key.strip()
         dart.dart_set_api_key(api_key)
 
 
 if __name__=='__main__':
+    if sys.platform.startswith('win'):
+        # On Windows calling this function is necessary.
+        mp.freeze_support()
     print(welcome)
     print('by Sungwoo Jo')
     spinner = Halo(text='Loading', spinner='dots')
