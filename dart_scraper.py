@@ -2,6 +2,7 @@ from __future__ import print_function, unicode_literals
 
 import os
 import re
+import configparser
 import dart_fss as dart
 from PyInquirer import prompt
 from halo import Halo
@@ -48,6 +49,11 @@ welcome = '''
 '''
 
 if __name__=='__main__':
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    dart_api_key = config['DART']['DART_API_KEY']
+    if dart_api_key != 'NONE':
+        dart.dart_set_api_key(api_key=dart_api_key)
     print(welcome)
     print('by Sungwoo Jo')
     spinner = Halo(text='Loading', spinner='dots')
