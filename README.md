@@ -37,20 +37,39 @@
 
 ![](./img/final.png)
 
-## 프로그램상에서 직접 입력(환경변수가 설정되어 있지 않은 경우)
+## 프로그램 실행법
 
--   인증키 복사(Ctrl+C)
--   프로그램상에서 오른쪽 버튼 클릭
+1. API_KEY 로딩을 위해 붉은색 버튼 클릭.
 
-![](./img/api_key_input.png)
+![](./img/loading.png)
+
+2.  API_KEY 설정이 필요한경우 API_KEY 입력후 붉은색 버튼 클릭
+
+![](./img/loading.png)
+
+3. 회사 검색 - 키워드 입력후 Enter
+
+![](./img/search.png)
+
+4. 회사 선택 - 선택목록중 선택, 다중선택 가능
+
+![](./img/select.png)
+
+5. Extract 버튼 클릭
+
+![](./img/extracting.png)
+
+## 오류관련 팝업
+
+1. "Please try again later": Background process가 로딩중인 상태 -> 로딩버튼 다시 클릭
+
+![](./img/loading_error.png)
+
+2. "DART API Key is not set": Dart API Key가 설정되지 않은 상태
+
+![](./img/set_key.png)
 
 
-## 프로그램 동작
--   Company Name: 회사이름
--   Select Compnay: 검색된 회사이름중 선택
--   Start date: YYYYMMDD 형색으로 입력
--   Separate: True 개별재무제표 / False 연결재무제표
--   Select report type: 사업보고서 / 반기 / 분기
--   Save Path: 저장경로
+## 알러진 버그
+- macOS에서 환경변수로 입력된 API KEY 값을 불러오지 못하는 버그
 
-![](./img/working.png)

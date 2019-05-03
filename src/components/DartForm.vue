@@ -50,7 +50,7 @@
                     v-model="mReportTp" 
                     :disabled="mAPIKeyValid"
                     placeholder="Select" 
-                    style="width:240px; margin-right: 5px"
+                    style="width:230px; margin-right: 5px"
                 >
                     <el-option
                         v-for="item in mReportOption"
@@ -63,7 +63,7 @@
                     v-model="mSeparate"
                     :disabled="mAPIKeyValid"
                     placeholder="Select"
-                    style="width:240px; margin-left: 5px;"
+                    style="width:230px; margin-left: 5px;"
                 >
                     <el-option
                             v-for="item in mSeparateOption"
