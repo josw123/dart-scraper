@@ -6,6 +6,7 @@ import socket
 import asyncio
 import multiprocessing as mp
 
+import pandas as pd
 import dart_fss as dart
 
 HOST = '127.0.0.1'          
@@ -138,16 +139,21 @@ def dart_save_file(crp, path, start_dt, end_dt, report_tp, separate):
 
     fs_list = ['fs', 'is', 'ci', 'cf']
     fs_nm_list = {'fs': '재무상태표', 'is': '손익계산서', 'ci': '포괄손익계산서', 'cf': '현금흐름표'}
+    results = dict()
     logger.info('Extracting {}'.format(crp))
     for fs_tp in fs_list:
         fs = crp.get_financial_statement(start_dt=start_dt, end_dt=end_dt, fs_tp=fs_tp, report_tp=report_tp, separate=separate)
-        if separate:
-            label = '개별'
-        else:
-            label = '연결'
-        filename = '{}_{}_{}.xlsx'.format(crp.crp_nm, label, fs_nm_list[fs_tp])
-        file_path = os.path.join(path, filename)
-        fs.to_excel(file_path)
+        results[fs_tp] = fs
+    
+    if separate:
+        label = '개별'
+    else:
+        label = '연결'
+    filename = '{}_{}.xlsx'.format(crp.crp_nm, label)
+    file_path = os.path.join(path, filename)
+    with pd.ExcelWriter(file_path) as writer:
+        for fs_tp, fs in results.items():
+            fs.to_excel(writer, sheet_name=fs_nm_list[fs_tp])
 
 
 def dart_download_file(data):
