@@ -4,7 +4,7 @@
 
 ## Version History
 - v0.2.1
-  - API Key 저장기능 추가(#3)
+  - API Key 자동저장기능 추가(#3)
   - 동일 회사의 데이터를 동일파일에 시트로 구분(#2)
   - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.1.7 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases))
 
@@ -23,39 +23,9 @@
 -   Windows 10
 -   macOS Mojave
 
-## 환경설정을 통해 API_KEY 설정(Windows 10)
-
-1.  [DART 오픈API](http://dart.fss.or.kr/dsap001/intro.do)에서 오픈API 신청
-
-![](./img/api_key.png)
-
-2.  "내 PC"에서 오른쪽 버튼-> 속성
-
-![](./img/right_click.png)
-
-3.  "시스템"에서 고급 시스템 설정 클릭
-
-![](./img/my_computer.png)
-
-4.  "시스템 속성"에서 환경 변수 클릭
-
-![](./img/system_info.png)
-
-5.  "환경 변수"에서 새로 만들기 클릭
-
-![](./img/env.png)
-
-6.  변수이름: DART_API_KEY / 변수 값: 오픈API 인증키 입력후 확인
-
-![](./img/new_env.png)
-
-7.  환경변수 설정완료후 아래와 그림과 같이 변수가 등록되어 있어야 됩니다. 이후 확인버튼을 눌리시면 등록이 완료 됩니다.
-
-![](./img/final.png)
-
 ## 프로그램 실행법
 
-1. API_KEY 로딩을 위해 붉은색 버튼 클릭.
+1. API_KEY 로딩을 위해 붉은색 버튼 클릭. API_KEY를 설정하면 자동으로 저장되며 이후 사용시 붉은색 버튼 클릭시 자동으로 
 
 ![](./img/loading.png)
 
