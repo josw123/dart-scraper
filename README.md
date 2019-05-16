@@ -54,8 +54,3 @@
 2. "DART API Key is not set": Dart API Key가 설정되지 않은 상태
 
 ![](./img/set_key.png)
-
-
-## 알러진 버그
-- macOS에서 환경변수로 입력된 API KEY 값을 불러오지 못하는 버그
-
