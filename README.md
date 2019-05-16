@@ -1,6 +1,6 @@
 # Dart Scraper
 
-[dart-fss](https://github.com/josw123/dart-fss) 모듈을 이용한 재무제표 추출 프로그램
+[Dart-Fss](https://github.com/josw123/dart-fss) 모듈을 이용한 재무제표 추출 프로그램
 
 ## Version History
 - v0.2.1
