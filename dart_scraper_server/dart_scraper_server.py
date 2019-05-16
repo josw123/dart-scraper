@@ -15,6 +15,43 @@ PORT = [8989, 9898, 7878, 6767]
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger('DartScraper')
 
+
+def get_config_path():
+    if sys.platform == 'darwin':
+        app_dir = os.path.join(os.path.expanduser('~/Library/Application Support'), 'dart-scraper')
+    elif sys.platform == 'win32':
+        app_dir = os.path.join(os.getenv('appdata'), 'dart-scraper')
+    else:
+        app_dir = os.path.join(os.path.expanduser('~'), '.dart-scraper')
+    config_path = os.path.join(app_dir, 'dart-setting.json')
+    return app_dir, config_path
+
+
+def save_config_file(api_key):
+    logger.info('Saving Config file')
+    app_dir, config_path = get_config_path()
+    if not os.path.exists(app_dir):
+        os.makedirs(app_dir)
+    
+    data = {'API_KEY': api_key}
+
+    with open(config_path, 'w') as config_file:
+        json.dump(data, config_file)
+
+
+def read_config_file():
+    logger.info('Reading Config file')
+    _, config_path = get_config_path()
+    if not os.path.exists(config_path):
+        logger.info('Config file not found')
+        return None
+
+    with open(config_path, 'r') as config_file:
+        data = json.load(config_file)
+
+    return data['API_KEY']
+    
+
 def data_encode(opcode = None, data = None):
     
     if not opcode:
@@ -35,7 +72,9 @@ def exception_handler(loop, context):
     loop.close()
     sys.exit()
 
+
 async def task_handler(client):
+    global loop
     unpack = {'opcode': None}
     while unpack.get('opcode') != 'dart_shut_down':
         recv = (await loop.sock_recv(client, 1024))
@@ -48,13 +87,15 @@ async def task_handler(client):
         res = dart_recv(unpack)
         await loop.sock_sendall(client, res)
     client.close()
+    loop.stop()
 
 
 async def run_server():
     global loop
-    while True:
-        client, _ = await loop.sock_accept(server)
-        loop.create_task(task_handler(client))
+    global server
+    client, _ = await loop.sock_accept(server)
+    loop.create_task(task_handler(client))
+        
 
 def dart_scraper_server():
     global loop
@@ -70,7 +111,8 @@ def dart_scraper_server():
     server.listen()
     server.setblocking(False)
     loop.set_exception_handler(exception_handler)
-    loop.run_until_complete(run_server())
+    loop.create_task(run_server())
+    loop.run_forever()
 
 
 def socket_bind(port):
@@ -103,13 +145,16 @@ def dart_recv(recv):
 
 
 def dart_set_api_key(api_key):
+    save_config_file(api_key)
     dart.dart_set_api_key(api_key)
     return data_encode('success', dart.crp.DartAuth().api_key)
 
 
 def dart_get_api_key(_):
+    api_key = read_config_file()
     try:
-        api_key = dart.crp.DartAuth().api_key
+        if api_key is None:
+            api_key = dart.crp.DartAuth().api_key
         return data_encode('success', api_key)
     except ValueError:
         return data_encode('error')
