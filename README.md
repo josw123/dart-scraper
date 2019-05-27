@@ -3,10 +3,15 @@
 [Dart-Fss](https://github.com/josw123/dart-fss) 모듈을 이용한 재무제표 추출 프로그램
 
 ## Version History
+- v0.2.2
+  - 저장된 API Key를 불러오지 못하는 버그 수정(#4)
+  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.1.8 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.1.8))
+
+
 - v0.2.1
   - API Key 자동저장기능 추가(#3)
   - 동일 회사의 데이터를 동일파일에 시트로 구분(#2)
-  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.1.7 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases))
+  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.1.7 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.1.7))
 
 - v0.2.0 
   - 프로그램 UI 전면 수정
