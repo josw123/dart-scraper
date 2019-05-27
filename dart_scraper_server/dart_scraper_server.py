@@ -155,6 +155,8 @@ def dart_get_api_key(_):
     try:
         if api_key is None:
             api_key = dart.crp.DartAuth().api_key
+        else:
+            dart.dart_set_api_key(api_key)
         return data_encode('success', api_key)
     except ValueError:
         return data_encode('error')
