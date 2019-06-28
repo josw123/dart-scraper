@@ -29,24 +29,27 @@
 -   macOS Mojave
 
 ## 프로그램 실행법
+1. [DART API 신청](https://dart.fss.or.kr/dsag002/insertForm.do)
 
-1. API_KEY 로딩을 위해 붉은색 버튼 클릭 (API_KEY를 설정하면 자동으로 저장되며 이후 버튼을 통해 로딩)
+2. [API Key 확인](http://dart.fss.or.kr/dsap001/apikeyManagement.do)
+
+3. API_KEY 로딩을 위해 붉은색 버튼 클릭 (API_KEY를 설정하면 자동으로 저장되며 이후 버튼을 통해 로딩)
 
 ![](./img/loading.png)
 
-2.  API_KEY 설정이 필요한경우 API_KEY 입력후 붉은색 버튼 클릭
+4.  API_KEY 설정이 필요한경우 API_KEY 입력후 붉은색 버튼 클릭
 
 ![](./img/loading.png)
 
-3. 회사 검색 - 키워드 입력후 Enter
+5. 회사 검색 - 키워드 입력후 Enter
 
 ![](./img/search.png)
 
-4. 회사 선택 - 선택목록중 선택, 다중선택 가능
+6. 회사 선택 - 선택목록중 선택, 다중선택 가능
 
 ![](./img/select.png)
 
-5. Extract 버튼 클릭
+7. Extract 버튼 클릭
 
 ![](./img/extracting.png)
 
