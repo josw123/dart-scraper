@@ -3,7 +3,7 @@ arelle==2.2
 beautifulsoup4==4.7.1
 certifi==2019.3.9
 chardet==3.0.4
-dart-fss==0.1.6
+dart-fss==0.1.9
 et-xmlfile==1.0.1
 fake-useragent==0.1.11
 future==0.17.1
