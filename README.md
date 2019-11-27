@@ -46,13 +46,6 @@
 
 - Dart Scraper 실행시 Local Webservice 실행
 
-- 기본 포트 5000 / 오류 발생시 아래와 같이 포트 변경
-
-![Console](./readme/port.png)
-
-``` bash
-> dart_scraper.exe -p 포트번호
-```
 
 ![Webpage](./readme/webpage.png)
 
@@ -68,6 +61,16 @@
 
 > 분기보고서는 연간보고서 및 반기보고서 내용을 포함하고 있음
 
-- 추출 시작일(Start Date) / 추츨 종려일(End Date)
+- 추출 시작일(Start Date) / 추츨 종료일(End Date)
 
 - 다운로드 폴더 경로(Download Folder)
+
+## 포트 변경
+
+- 기본 포트 5000 / 오류 발생시 아래와 같이 포트 변경
+
+``` bash
+> dart_scraper.exe -p 포트번호
+```
+
+![Console](./readme/port.png)
