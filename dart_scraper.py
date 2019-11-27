@@ -5,6 +5,7 @@ import os
 import sys
 import asyncio
 import argparse
+import pathlib
 
 import json
 import socket
@@ -173,8 +174,13 @@ def download():
     separate = data.get('separate', False)
     report_tp = data.get('report_tp', 'annual')
     report_tp = report_tp.lower()
+    
+    # Make Folder
+    pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
     filename = '{}_{}_{}.xlsx'.format(crp_cd, 'separate' if separate else 'consolidated', report_tp)
     fs = crp.get_financial_statement(start_dt=start_dt, end_dt=end_dt, separate=separate, report_tp=report_tp)
+    
     fs.save(path=path,filename=filename)
     ret_code['ret_code'] = 'success'
     ret_code['msg'] = 'Successfully added to download list'

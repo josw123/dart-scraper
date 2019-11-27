@@ -5,6 +5,8 @@
 node_modules
 /dist
 fs_data/
+fsdata/
+
 # local env files
 .env.local
 .env.*.local

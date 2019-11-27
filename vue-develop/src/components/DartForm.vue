@@ -246,6 +246,7 @@ export default {
                   'end_dt': enddt,
                   'report_tp': this.reportTpList,
                   'separate': separate,
+                  'path': this.folder
                 };
                 this.downloadList.push(body)
               }
