@@ -40,7 +40,30 @@
 
 2. [API Key 확인](http://dart.fss.or.kr/dsap001/apikeyManagement.do)
 
-## 프로그램
+
+## 설치
+
+### Windows
+
+- dart_scraper.exe 다운로드 후 실행
+
+### macOS
+
+- dart_scraper.sh 다운로드
+
+- Terminal 실행 후 아래 명령어 입력(다운로드 폴더로 이동 후)
+
+```bash
+> bash dart_scraper.sh # 또는 sh dart_scraper.sh
+```
+
+![download1](./readme/install1.png)
+
+- 최초 실행 이후 DartScraper 폴더의 dart_scraper 파일 실행
+
+![download1](./readme/install2.png)
+
+## 프로그램 사용법
 
 ![Console](./readme/console.png)
 
