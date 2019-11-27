@@ -3,6 +3,8 @@
 [Dart-Fss](https://github.com/josw123/dart-fss) 모듈을 이용한 재무제표 추출 프로그램
 
 ## Version History
+- v0.3.0
+  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.2.4 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.2.4))
 
 - v0.2.3
   - 재무제표 추출 속도 개선
@@ -30,40 +32,42 @@
 
 ## 프로그램 테스트 환경
 
--   Windows 10
+-   Windows 10 1903
 -   macOS Mojave
 
-## 프로그램 실행법
+## DART API 신청
 1. [DART API 신청](https://dart.fss.or.kr/dsag002/insertForm.do)
 
 2. [API Key 확인](http://dart.fss.or.kr/dsap001/apikeyManagement.do)
 
-3. API_KEY 로딩을 위해 붉은색 버튼 클릭 (API_KEY를 설정하면 자동으로 저장되며 이후 버튼을 통해 로딩)
+## 프로그램
 
-![](./img/loading.png)
+![Console](./readme/console.png)
 
-4.  API_KEY 설정이 필요한경우 API_KEY 입력후 붉은색 버튼 클릭
+- Dart Scraper 실행시 Local Webservice 실행
 
-![](./img/loading.png)
+- 기본 포트 5000 / 오류 발생시 아래와 같이 포트 변경
 
-5. 회사 검색 - 키워드 입력후 Enter
+![Console](./readme/port.png)
 
-![](./img/search.png)
+``` bash
+> dart_scraper.exe -p 포트번호
+```
 
-6. 회사 선택 - 선택목록중 선택, 다중선택 가능
+![Webpage](./readme/webpage.png)
 
-![](./img/select.png)
+- DART API KEY 입력
 
-7. Extract 버튼 클릭
+- 재무제표를 다운받을 회사 선택
 
-![](./img/extracting.png)
+- 개별(Separate) / 별도(Consolidated) 재무제표 선택 (동시선택 가능)
 
-## 오류관련 팝업
+- 연간보고서(Annual) / 반기보고서(Half) / 분기보고서(Quarter) 선택
 
-1. "Please try again later": Background process가 로딩중인 상태 -> 로딩버튼 다시 클릭
+> 반기보고서는 연간보고서 내용을 포함하고 있음
 
-![](./img/loading_error.png)
+> 분기보고서는 연간보고서 및 반기보고서 내용을 포함하고 있음
 
-2. "DART API Key is not set": Dart API Key가 설정되지 않은 상태
+- 추출 시작일(Start Date) / 추츨 종려일(End Date)
 
-![](./img/set_key.png)
+- 다운로드 폴더 경로(Download Folder)
