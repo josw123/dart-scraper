@@ -2,6 +2,10 @@
 
 [Dart-Fss](https://github.com/josw123/dart-fss) 모듈을 이용한 재무제표 추출 프로그램
 
+## Download
+
+[Download Link](https://github.com/josw123/dart-scraper/releases)
+
 ## Version History
 - v0.3.0
   - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.2.4 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.2.4))
