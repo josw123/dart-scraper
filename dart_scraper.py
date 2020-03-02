@@ -3,12 +3,10 @@
 
 import os
 import sys
-import asyncio
 import argparse
 import pathlib
 
 import json
-import socket
 import webbrowser
 
 import version
@@ -16,7 +14,7 @@ import dart_fss as dart
 
 
 from halo import Halo
-from flask import Flask, render_template, request, jsonify, make_response, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory
 
 ver = version.ver
 
@@ -97,6 +95,7 @@ def read_config_file():
 def index():
     return render_template('index.html')
 
+
 @app.route('/apikey', methods=['POST', 'GET'])
 def key():
     data = {}
@@ -109,10 +108,10 @@ def key():
         api_key = res_data.get('api_key')
         if api_key and len(api_key) == 40:
             try:
-                dart.dart_set_api_key(api_key)
+                dart.set_api_key(api_key)
                 save_config_file(api_key)
                 data['ret_code'] = 'success'
-            except dart.errors.DartAPIError:
+            except dart.errors.APIKeyError:
                  data['ret_code'] = 'error'
         else:
             data['ret_code'] = 'error'
@@ -124,7 +123,7 @@ def version():
     global ver
     ret_code = {
         'version': ver,
-        'ret_code':'success'
+        'ret_code': 'success'
     }
     return jsonify(ret_code)
 
@@ -136,17 +135,18 @@ def company():
         name = ''
     else:
         name = data.get('name', '')
-    crps = crp_list.find_by_name(name)
+    corps = corp_list.find_by_corp_name(name)
     
-    crps_list = []
-    for crp in crps:
-        crp_data = {'code': crp.crp_cd, 'name': crp.crp_nm}
-        crps_list.append(crp_data)
+    corps_list = []
+    for corp in corps:
+        corp_data = {'code': corp.corp_code, 'name': corp.corp_name}
+        corps_list.append(corp_data)
     
-    ret_code = {'ret_code': 'success', 'crp_list': crps_list}
+    ret_code = {'ret_code': 'success', 'crp_list': corps_list}
     return jsonify(ret_code)
 
-@app.route('/download' , methods=['POST'])
+
+@app.route('/download', methods=['POST'])
 def download():
     ret_code = {}
     data = request.json
@@ -166,11 +166,11 @@ def download():
     end_dt = data.get('end_dt', None)
     path = data.get('path', None)
     
-    crp = crp_list.find_by_crp_cd(crp_cd)
-    if crp is None:
+    corp = corp_list.find_by_corp_code(crp_cd)
+    if corp is None:
         ret_code['msg'] = 'Invalid crp_cd'
         ret_code['ret_code'] = 'error'
-        return  jsonify(ret_code)
+        return jsonify(ret_code)
     separate = data.get('separate', False)
     report_tp = data.get('report_tp', 'annual')
     report_tp = report_tp.lower()
@@ -179,17 +179,18 @@ def download():
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
 
     filename = '{}_{}_{}.xlsx'.format(crp_cd, 'separate' if separate else 'consolidated', report_tp)
-    fs = crp.get_financial_statement(start_dt=start_dt, end_dt=end_dt, separate=separate, report_tp=report_tp)
+    fs = corp.extract_fs(bgn_de=start_dt, end_de=end_dt, separate=separate, report_tp=report_tp)
     
-    fs.save(path=path,filename=filename)
+    fs.save(path=path, filename=filename)
     ret_code['ret_code'] = 'success'
     ret_code['msg'] = 'Successfully added to download list'
     return jsonify(ret_code)
 
+
 @app.route('/path', methods=['GET'])
 def path():
     ret_code = {}
-    ret_code['path'] = os.path.join(os.getcwd(),'fsdata')
+    ret_code['path'] = os.path.join(os.getcwd(), 'fsdata')
     ret_code['ret_code'] = 'success'
     return jsonify(ret_code)
 
@@ -210,7 +211,7 @@ if port is None:
     
 spinner = Halo(text='Downloading list of companies', spinner='dots')
 spinner.start()
-crp_list = dart.get_crp_list()
+corp_list = dart.get_corp_list()
 spinner.stop()
 
 url = "http://127.0.0.1:{}".format(port)

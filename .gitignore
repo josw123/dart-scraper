@@ -6,6 +6,7 @@ node_modules
 /dist
 fs_data/
 fsdata/
+venv/
 
 # local env files
 .env.local
