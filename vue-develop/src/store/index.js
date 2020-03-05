@@ -4,8 +4,10 @@ import { request } from '../utils/requests'
 
 Vue.use(Vuex);
 
-//const base = window.location.href
-const base = 'http://localhost:5000'
+const base = window.location.href
+//const base = 'http://localhost:5000/'
+export {base}
+
 
 const state = {
   github_version: null,
@@ -71,7 +73,7 @@ const actions = {
     commit('setGithubVersion', github_recv.data['tag_name'])
   },
   async getVersion({ commit }) {
-    const path = '/version'
+    const path = 'version'
     try{
       const recv = await request.get(base, path)
       commit('setVersion', recv.data.version)
@@ -81,12 +83,12 @@ const actions = {
     }
   },
   async getAPIKey({ commit }) {
-    const path = '/key'
+    const path = 'key'
     const recv = await request.get(base, path)
     commit('setAPIKey', recv.data['api_key'])
   },
   async setAPIKey({ commit }, api_key) {
-    const path = '/key'
+    const path = 'key'
     const data = {api_key: api_key}
     const recv = await request.post(base, path, data)
     if (recv.data.ret_code === 'success') {
@@ -102,7 +104,7 @@ const actions = {
       data['base_path'] = base_path
       data['new_path'] = new_path
     }
-    const path = '/dir'
+    const path = 'dir'
     const recv = await request.post(base, path, data)
     if (recv.data['ret_code'] === 'success') {
       commit('setBasePath', recv.data['base_path'])
