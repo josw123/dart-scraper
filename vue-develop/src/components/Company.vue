@@ -21,6 +21,12 @@
 <script>
 export default {
   sockets: {
+    connect(){
+      this.$store.commit('setError', null)
+    },
+    connect_error(){
+      this.$store.commit('setError', 'The connection with the Dart-Scraper has been terminated')
+    },
     corp_list(data){
       const tp = data['type']
       switch(tp.toLowerCase()) {

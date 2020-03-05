@@ -15,7 +15,7 @@
       </v-btn>
     </v-app-bar>
     <v-content>
-       <v-dialog v-model="error" persistent max-width="290">
+       <v-dialog v-model="error" persistent max-width="450">
          <v-card>
            <v-card-title>
              Error

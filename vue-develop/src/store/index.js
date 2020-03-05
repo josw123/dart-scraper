@@ -74,13 +74,8 @@ const actions = {
   },
   async getVersion({ commit }) {
     const path = 'version'
-    try{
-      const recv = await request.get(base, path)
-      commit('setVersion', recv.data.version)
-    }
-    catch (e) {
-      commit('setError', e)
-    }
+    const recv = await request.get(base, path)
+    commit('setVersion', recv.data.version)
   },
   async getAPIKey({ commit }) {
     const path = 'key'
