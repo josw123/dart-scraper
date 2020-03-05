@@ -28,6 +28,12 @@ else:
 # CORS setting
 cors_allowed_origins = '*'
 
+
+def set_cors(url):
+    global cors_allowed_origins
+    cors_allowed_origins = url
+
+
 # Generate SocketIo
 socketio = SocketIO(app, cors_allowed_origins=cors_allowed_origins)
 
@@ -36,5 +42,5 @@ from app import cors
 from app import socketIo
 from app import api
 
-__all__ = ['app', 'ver', 'socketio',  'cors_allowed_origins',
+__all__ = ['app', 'ver', 'socketio', 'set_cors', 'cors_allowed_origins',
            'favicon_folder', 'js_folder', 'css_folder', 'img_folder']
