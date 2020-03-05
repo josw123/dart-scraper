@@ -39,3 +39,4 @@ urllib3==1.25.7
 webencodings==0.5.1
 Werkzeug==0.16.0
 wincertstore==0.2
+flask_socketio
