@@ -4,7 +4,7 @@
       <div class="d-flex align-center">
         <H2>Dart-Scraper {{ version }}</H2>
       </div>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn
         href="https://github.com/josw123/dart-scraper/releases/latest"
         target="_blank"
@@ -15,6 +15,16 @@
       </v-btn>
     </v-app-bar>
     <v-content>
+       <v-dialog v-model="error" persistent max-width="290">
+         <v-card>
+           <v-card-title>
+             Error
+           </v-card-title>
+           <v-card-text>
+             {{ error }}
+           </v-card-text>
+         </v-card>
+       </v-dialog>
       <v-banner v-if="newVersion" single-line>
         <v-icon slot="icon" color="warning" size="36">
           mdi-open-in-new
@@ -74,6 +84,9 @@ export default {
         }
       }
       return newVersion
+    },
+    error() {
+      return this.$store.state.error
     }
   }
 }

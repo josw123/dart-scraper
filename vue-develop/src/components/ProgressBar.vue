@@ -40,20 +40,26 @@ export default {
       showProgressbar: false,
       totalProgress: 0,
       corpProgress: 0,
-      corp: null,
+      corp_name: null,
       report_tp: null
+    }
+  },
+  methods: {
+    hideProgressBar() {
+      this.showProgressbar = false
     }
   },
   sockets: {
     download(data) {
       const tp = data['type']
       const payload = data['data']
-      let corp_name = payload['name']
-      let state = payload['state']
+      let corp_name = payload['corp_name']
       let total = payload['total']
       let index = payload['index']
-
       let report_tp = payload['report_tp']
+      if (report_tp === undefined) {
+        report_tp = 'Annual'
+      }
       let progress = payload['progress']
       switch (tp) {
         case 'total':
@@ -61,26 +67,17 @@ export default {
             this.showError = false
             this.showProgressbar = true
           } else {
-            this.showProgressbar = false
+            this.totalProgress = 100
+            setTimeout(this.hideProgressBar, 3000)
           }
           break
         case 'error':
           this.showError = true
           this.showErrorMsg = payload
           break
-        case 'download':
-          this.showProgressbar = true
-          if (state === 'start') {
-            this.corpProgress = 0
-            this.totalProgress = ((index - 1) / total) * 100
-          } else {
-            this.corpProgress = 100
-            this.totalProgress = (index / total) * 100
-          }
-          this.corp_name = corp_name
-          break
         case 'progress':
           this.showProgressbar = true
+          this.totalProgress = ((index) / total) * 100
           this.corp_name = corp_name
           this.corpProgress = progress
           this.report_tp = report_tp

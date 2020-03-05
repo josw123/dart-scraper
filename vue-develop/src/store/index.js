@@ -19,6 +19,7 @@ const state = {
   base_path: null,
   base_path_error: false,
   subdir: [],
+  error: null,
 }
 
 const getters = {}
@@ -56,6 +57,9 @@ const mutations = {
   },
   setBasePathError(state, ret_code) {
     state.base_path_error = ret_code
+  },
+  setError(state, error){
+    state.error = error
   }
 }
 
@@ -68,8 +72,13 @@ const actions = {
   },
   async getVersion({ commit }) {
     const path = '/version'
-    const recv = await request.get(base, path)
-    commit('setVersion', recv.data.version)
+    try{
+      const recv = await request.get(base, path)
+      commit('setVersion', recv.data.version)
+    }
+    catch (e) {
+      commit('setError', e)
+    }
   },
   async getAPIKey({ commit }) {
     const path = '/key'

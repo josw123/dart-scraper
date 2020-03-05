@@ -17,6 +17,8 @@ class TqdmExtractor(object):
         super().__init__()
         self.stderr = stderr
         self.corp = None
+        self.total = None
+        self.index = None
 
     def write(self, text):
         self.stderr.write(text)
@@ -30,14 +32,18 @@ class TqdmExtractor(object):
                 data = dict(report_tp=report_tp,
                             progress=progress,
                             corp_code=self.corp.corp_code,
-                            corp_name=self.corp.corp_name)
+                            corp_name=self.corp.corp_name,
+                            total=self.total,
+                            index=self.index)
                 payload = dict(type='progress', data=data)
                 socketio.emit('download', payload, broadcast=True)
 
     def flush(self):
         self.stderr.flush()
 
-    def set_corp(self, corp):
+    def set_info(self, corp, total, index):
+        self.total = total
+        self.index = index
         self.corp = corp
 
 
@@ -93,6 +99,8 @@ def corp_list_handler(data):
         socketio.emit('corp_list', payload, broadcast=True)
     else:
         corps = corp_list.find_by_corp_name(corp_name=corp_name, exactly=exactly)
+        if corps is None:
+            corps = []
         payload = dict(type='data', data=[x.to_dict() for x in corps])
         socketio.emit('corp_list', payload, broadcast=True)
 
@@ -146,28 +154,28 @@ def download_handler(data):
     # Start
     for idx, corp_code in enumerate(corps):
         corp = corp_list.find_by_corp_code(corp_code)
-        sys.stderr.set_corp(corp)
+        sys.stderr.set_info(corp, len(corps), index=idx)
         try:
             # Extracting START
             payload_data = dict(corp_code=corp.corp_code,
                                 corp_name=corp.corp_name,
-                                state='start',
+                                progress=0,
                                 total=len(corps),
-                                index=idx + 1)
-            payload = dict(type='download', data=payload_data)
+                                index=idx)
+            payload = dict(type='progress', data=payload_data)
             socketio.emit('download', payload, broadcast=True)
 
             fs = corp.extract_fs(bgn_de=bgn_de, end_de=end_de, separate=separate, report_tp=report_tp)
-
-            fs.save(path=path)
+            filename = '{}_{}_{}.xlsx'.format(corp.corp_name, corp.corp_code, report_tp)
+            fs.save(path=path, filename=filename)
 
             # Extracting Finish
             payload_data = dict(corp_code=corp.corp_code,
                                 corp_name=corp.corp_name,
-                                state='finish',
+                                progress='100',
                                 total=len(corps),
-                                index=idx + 1)
-            payload = dict(type='download', data=payload_data)
+                                index=idx)
+            payload = dict(type='progress', data=payload_data)
             socketio.emit('download', payload, broadcast=True)
         except:
             # Extracting START
