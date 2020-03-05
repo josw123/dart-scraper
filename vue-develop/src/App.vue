@@ -1,12 +1,8 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
-        <H2>Dart-Scraper {{current_version}}</H2>
+        <H2>Dart-Scraper {{ version }}</H2>
       </div>
       <v-spacer></v-spacer>
       <v-btn
@@ -19,77 +15,68 @@
       </v-btn>
     </v-app-bar>
     <v-content>
-      <v-banner v-if="newVersion" single-line >
-        <v-icon
-                slot="icon"
-                color="warning"
-                size="36"
-        >
+      <v-banner v-if="newVersion" single-line>
+        <v-icon slot="icon" color="warning" size="36">
           mdi-open-in-new
         </v-icon>
         New Version Released!
         <template v-slot:actions>
           <v-btn
-                  color="primary"
-                  text
-                  href="https://github.com/josw123/dart-scraper/releases/latest"
+            color="primary"
+            text
+            href="https://github.com/josw123/dart-scraper/releases/latest"
           >
             Download
           </v-btn>
         </template>
       </v-banner>
-      <DartForm/>
+      <DartForm />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import DartForm from './components/DartForm';
-import axios from 'axios';
+import DartForm from './components/DartForm'
 
 export default {
   name: 'App',
   components: {
-    DartForm,
+    DartForm
   },
 
-  data: () => {
-    return {
-      company: null,
-      newVersion: false,
-      current_version: null,
-    }
+  beforeCreate() {
+    this.$store.dispatch('getGithubVersion')
+    this.$store.dispatch('getVersion')
+    this.$store.dispatch('getDirectory')
   },
-  mounted() {
-    let url_base = window.location.href
-    axios.get(url_base + "company").then( res => {this.company = res.data})
-    axios.get('https://api.github.com/repos/josw123/dart-scraper/releases/latest').then(res1 => {
-      axios.get(url_base + "version").then(res2 => {
-        let re = /(\d).(\d).(\d)/
-        let version = res2.data['version']
-        let github_version = res1.data['tag_name']
-        
-        this.current_version = version
-        
-        let vg = re.exec(github_version)
-        let vl = re.exec(version)
-      
-        for (let i=1; i < 4; i++) {
+  computed: {
+    github_version() {
+      return this.$store.state.github_version
+    },
+    version() {
+      return this.$store.state.version
+    },
+    newVersion() {
+      let newVersion = false
+      if (this.github_version !== null && this.version !== null) {
+        const re = /(\d).(\d).(\d)/
+        let vg = re.exec(this.github_version)
+        let vl = re.exec(this.version)
+        for (let i = 1; i < 4; i++) {
           let vg_i = parseInt(vg[i])
-          let vl_i = parseInt((vl[i]))
+          let vl_i = parseInt(vl[i])
           if (vg_i > vl_i) {
-            this.newVersion = true
+            newVersion = true
             break
           } else if (vg_i < vl_i) {
             break
           }
         }
-      })
-    })
-
+      }
+      return newVersion
+    }
   }
-};
+}
 </script>
 
-<style>
-</style>
+<style></style>
