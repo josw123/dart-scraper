@@ -7,7 +7,6 @@ import dart_fss as dart
 from app import app, ver
 from flask import request, jsonify
 from app.utils import read_config_file, save_config_file
-from app.socketIo import corp_list_loading
 
 @app.route('/key', methods=['POST', 'GET'])
 def dart_api_key():
