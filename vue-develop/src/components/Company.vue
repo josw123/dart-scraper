@@ -70,7 +70,7 @@ export default {
       }
     },
     cpList(newValue){
-      console.log(newValue)
+      this.$store.commit('setCorps', newValue)
     }
   }
 }

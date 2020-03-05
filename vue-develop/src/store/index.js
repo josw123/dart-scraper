@@ -14,7 +14,6 @@ const state = {
   bgn_de: '',
   end_de: '',
   corps: [],
-  path: '',
   separate: false,
   report_tp: 'Annual',
   base_path: null,
@@ -43,9 +42,6 @@ const mutations = {
   setCorps(state, corps) {
     state.corps = [...corps]
   }, 
-  setPath(state, path) {
-    state.path = path
-  },
   setSeparate(state, separate) {
     state.separate = separate
   },

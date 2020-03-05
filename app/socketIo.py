@@ -16,7 +16,7 @@ class TqdmExtractor(object):
     def __init__(self, stderr):
         super().__init__()
         self.stderr = stderr
-        self.crop_code = None
+        self.corp = None
 
     def write(self, text):
         self.stderr.write(text)
@@ -24,16 +24,21 @@ class TqdmExtractor(object):
         report_tp = report_tp_regex.search(text)
         if report_tp is not None:
             report_tp = report_tp.group(1)
-            progress = progress_regex.search(text).group(1)
-            data = dict(report_tp=report_tp, progress=progress, corp_code=self.crop_code)
-            payload = dict(type='progress', data=data)
-            socketio.emit('download', payload, broadcast=True)
+            progress = progress_regex.search(text)
+            if progress is not None:
+                progress = progress.group(1)
+                data = dict(report_tp=report_tp,
+                            progress=progress,
+                            corp_code=self.corp.corp_code,
+                            corp_name=self.corp.corp_name)
+                payload = dict(type='progress', data=data)
+                socketio.emit('download', payload, broadcast=True)
 
     def flush(self):
         self.stderr.flush()
 
-    def set_corp_code(self, corp_code):
-        self.crop_code = corp_code
+    def set_corp(self, corp):
+        self.corp = corp
 
 
 @socketio.on('connect')
@@ -103,7 +108,8 @@ def set_api_key(key):
 
 @socketio.on('download')
 def download_handler(data):
-    data = json.loads(data)
+    if isinstance(data, str):
+        data = json.loads(data)
 
     # Set DART_API_KEY
     key = data.get('api_key')
@@ -127,50 +133,55 @@ def download_handler(data):
         socketio.emit('download', payload, broadcast=True)
         return
 
-    # Loading Start
-    payload = dict(type='crop_list_loading', data='start')
-    socketio.emit('download', payload, broadcast=True)
-
     corp_list = corp_list_loading()
 
-    # Loading Start
-    payload = dict(type='crop_list_loading', data='finish')
-    socketio.emit('download', payload, broadcast=True)
-
-    # Acquire semaphore
-    sem.acquire()
 
     # stderr progress extractor
     stderr = sys.stderr
     sys.stderr = TqdmExtractor(stderr)
 
+    payload = dict(type='total', data='start')
+    socketio.emit('download', payload, broadcast=True)
+
     # Start
     for idx, corp_code in enumerate(corps):
+        corp = corp_list.find_by_corp_code(corp_code)
+        sys.stderr.set_corp(corp)
         try:
             # Extracting START
-            payload_data = dict(corp_code=corp_code, state='start', total=len(corps), index=idx + 1)
+            payload_data = dict(corp_code=corp.corp_code,
+                                corp_name=corp.corp_name,
+                                state='start',
+                                total=len(corps),
+                                index=idx + 1)
             payload = dict(type='download', data=payload_data)
             socketio.emit('download', payload, broadcast=True)
 
-            sys.stderr.set_corp_code(corp_code)
-
-            corp = corp_list.find_by_corp_code(corp_code)
             fs = corp.extract_fs(bgn_de=bgn_de, end_de=end_de, separate=separate, report_tp=report_tp)
 
             fs.save(path=path)
 
             # Extracting Finish
-            payload_data = dict(corp_code=corp_code, state='finish', total=len(corps), index=idx + 1)
+            payload_data = dict(corp_code=corp.corp_code,
+                                corp_name=corp.corp_name,
+                                state='finish',
+                                total=len(corps),
+                                index=idx + 1)
             payload = dict(type='download', data=payload_data)
             socketio.emit('download', payload, broadcast=True)
         except:
             # Extracting START
-            payload_data = dict(corp_code=corp_code, state='error', total=len(corps), index=idx + 1)
+            payload_data = dict(corp_code=corp.corp_code,
+                                corp_name=corp.corp_name,
+                                state='error',
+                                total=len(corps),
+                                index=idx + 1)
             payload = dict(type='download', data=payload_data)
             socketio.emit('download', payload, broadcast=True)
+
+    payload = dict(type='total', data='end')
+    socketio.emit('download', payload, broadcast=True)
 
     # Reset stderr
     sys.stderr = stderr
 
-    # Release semaphore
-    sem.release()

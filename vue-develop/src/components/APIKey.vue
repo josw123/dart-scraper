@@ -2,7 +2,7 @@
   <v-text-field
     v-model="apikey"
     :append-icon="apiKeyShow ? 'mdi-eye' : 'mdi-eye-off'"
-    :rules="[apikeyRules.required, apikeyRules.min]"
+    :rules="[apikeyRules.required]"
     :type="apiKeyShow ? 'text' : 'password'"
     name="input"
     label="DART API KEY"
