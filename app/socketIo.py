@@ -143,7 +143,6 @@ def download_handler(data):
 
     corp_list = corp_list_loading()
 
-
     # stderr progress extractor
     stderr = sys.stderr
     sys.stderr = TqdmExtractor(stderr)
