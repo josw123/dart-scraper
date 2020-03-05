@@ -100,7 +100,6 @@ const actions = {
     const path = '/dir'
     const recv = await request.post(base, path, data)
     if (recv.data['ret_code'] === 'success') {
-      console.log("success")
       commit('setBasePath', recv.data['base_path'])
       commit('setSubDir', recv.data['subdir'])
       commit('setBasePathError', false)

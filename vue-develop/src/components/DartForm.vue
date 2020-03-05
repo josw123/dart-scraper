@@ -18,7 +18,6 @@
               <Separate />
               <ReportTp />
               <Date />
-      
               <Directory />
             </v-card-text>
             <v-alert v-if="showError" dense outlined type="error">

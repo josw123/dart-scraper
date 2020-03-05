@@ -90,6 +90,7 @@ export default {
       this.itemClick(path)
     },
     select() {
+      this.itemClick(this.path)
       this.dialog = false
     },
     cancel() {
