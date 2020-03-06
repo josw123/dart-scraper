@@ -64,7 +64,7 @@ def directory():
         }
         return jsonify(ret_code)
 
-    path = os.path.join(base_path, '*\\')
+    path = os.path.join(base_path, '*/')
     subdir = []
     for d in glob.glob(path):
         subdir.append(d)
