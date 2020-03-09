@@ -12,16 +12,13 @@ export {base}
 const state = {
   github_version: null,
   version: null,
-  api_key: null,
+  apiKey: null,
   bgn_de: '',
   end_de: '',
   corps: [],
   separate: false,
   report_tp: 'Annual',
   base_path: null,
-  base_path_error: false,
-  subdir: [],
-  error: null,
 }
 
 const getters = {}
@@ -33,8 +30,8 @@ const mutations = {
   setVersion(state, version) {
     state.version = version
   },
-  setAPIKey(state, api_key) {
-    state.api_key = api_key
+  setAPIKey(state, apiKey) {
+    state.apiKey = apiKey
   },
   setBgnDe(state, bgn_de) {
     state.bgn_de = bgn_de
@@ -54,15 +51,6 @@ const mutations = {
   setBasePath(state, base_path) {
     state.base_path = base_path
   },
-  setSubDir(state, subdir) {
-    state.subdir = [...subdir]
-  },
-  setBasePathError(state, ret_code) {
-    state.base_path_error = ret_code
-  },
-  setError(state, error){
-    state.error = error
-  }
 }
 
 const actions = {
@@ -71,43 +59,6 @@ const actions = {
     const github_path = '/repos/josw123/dart-scraper/releases/latest'
     const github_recv = await request.get(github, github_path)
     commit('setGithubVersion', github_recv.data['tag_name'])
-  },
-  async getVersion({ commit }) {
-    const path = 'version'
-    const recv = await request.get(base, path)
-    commit('setVersion', recv.data.version)
-  },
-  async getAPIKey({ commit }) {
-    const path = 'key'
-    const recv = await request.get(base, path)
-    commit('setAPIKey', recv.data['api_key'])
-  },
-  async setAPIKey({ commit }, api_key) {
-    const path = 'key'
-    const data = {api_key: api_key}
-    const recv = await request.post(base, path, data)
-    if (recv.data.ret_code === 'success') {
-      commit('setAPIKey', api_key)
-    } else {
-      commit('setAPIKey', null)
-    }
-  },
-  async getDirectory({commit}, payload) {
-    let data = {}
-    if (payload !== undefined) {
-      const {base_path, new_path} = payload
-      data['base_path'] = base_path
-      data['new_path'] = new_path
-    }
-    const path = 'dir'
-    const recv = await request.post(base, path, data)
-    if (recv.data['ret_code'] === 'success') {
-      commit('setBasePath', recv.data['base_path'])
-      commit('setSubDir', recv.data['subdir'])
-      commit('setBasePathError', false)
-    } else {
-      commit('setBasePathError', true)
-    }
   }
 }
 

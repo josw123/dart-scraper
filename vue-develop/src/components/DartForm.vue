@@ -13,12 +13,14 @@
               />
             </v-flex>
             <v-card-text>
+              <Alert />
               <APIKey />
               <Company />
               <Separate />
               <ReportTp />
               <Date />
               <Directory />
+              <Log />
             </v-card-text>
             <ProgressBar />
             <v-divider class="mt-12" />
@@ -41,6 +43,8 @@ import Date from './Date'
 import Company from './Company'
 import Directory from './Directory'
 import ProgressBar from './ProgressBar'
+import Alert from './Alert'
+import Log from './Log'
 
 export default {
   name: 'DartScraper',
@@ -52,6 +56,8 @@ export default {
     Company,
     Directory,
     ProgressBar,
+    Alert,
+    Log,
   },
   data: () => {
     return {
@@ -69,7 +75,7 @@ export default {
           separate: this.$store.state.separate,
           report_tp: this.$store.state.report_tp
         }
-        this.$socket.emit('download', payload)
+        this.$socket.emit('DOWNLOAD', payload)
       }
     }
   },

@@ -6,6 +6,7 @@
     :rules="[cpRules.required]"
     :search-input.sync="search"
     :loading="loading"
+    :disabled="apiKey === null"
     label="Company Name"
     item-text="corp_name"
     item-value="corp_code"
@@ -19,31 +20,26 @@
 </template>
 
 <script>
+const CORP_LIST = 'CORP_LIST'
 export default {
   sockets: {
-    connect(){
-      this.$store.commit('setError', null)
-    },
-    connect_error(){
-      this.$store.commit('setError', 'The connection with the Dart-Scraper has been terminated')
-    },
-    corp_list(data){
-      const tp = data['type']
-      switch(tp.toLowerCase()) {
+    [CORP_LIST]({type, data}) {
+      switch(type.toLowerCase()) {
         case 'loading':
-          if (data['data'].toLowerCase() === 'start') {
+          if (data.toLowerCase() === 'start') {
             this.loading = true
           } else {
             this.loading = false
           }
           break
         case 'data':
-          this.companyItems = [...this.cpList, ...data['data']]
+          this.companyItems = [...this.cpList, ...data]
           break
         default:
           break
       }
-    }
+
+    },
   },
   data() {
     return {
@@ -61,8 +57,13 @@ export default {
     requestList() {
       if (this.search.length > 1) {
         const payload = { corp_name: this.search}
-        this.$socket.emit('corp_list', payload)
+        this.$socket.emit(CORP_LIST, payload)
       }
+    }
+  },
+  computed:{
+    apiKey(){
+      return this.$store.state.apiKey
     }
   },
   watch: {

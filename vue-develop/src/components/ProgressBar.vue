@@ -1,8 +1,5 @@
 <template>
   <div style="width:100%">
-    <v-alert v-if="showError" dense outlined type="error">
-      {{ showErrorMsg }}
-    </v-alert>
     <v-dialog v-model="showProgressbar" persistent width="800">
       <v-card dark>
         <v-card-text>
@@ -31,12 +28,11 @@
 </template>
 
 <script>
+  const DOWNLOAD = 'DOWNLOAD'
 export default {
   name: 'ProgressBar',
   data() {
     return {
-      showError: false,
-      showErrorMsg: '',
       showProgressbar: false,
       totalProgress: 0,
       corpProgress: 0,
@@ -50,20 +46,11 @@ export default {
     }
   },
   sockets: {
-    download(data) {
-      const tp = data['type']
-      const payload = data['data']
-      let corp_name = payload['corp_name']
-      let total = payload['total']
-      let index = payload['index']
-      let report_tp = payload['report_tp']
-      if (report_tp === undefined) {
-        report_tp = 'Annual'
-      }
-      let progress = payload['progress']
-      switch (tp) {
-        case 'total':
-          if (payload === 'start') {
+    [DOWNLOAD]({type, data}) {
+      const {progress, corp_name, total, index, report_tp} = data
+      switch(type) {
+        case 'loading':
+          if (data === 'start') {
             this.showError = false
             this.showProgressbar = true
           } else {
@@ -71,11 +58,7 @@ export default {
             setTimeout(this.hideProgressBar, 3000)
           }
           break
-        case 'error':
-          this.showError = true
-          this.showErrorMsg = payload
-          break
-        case 'progress':
+        case 'data':
           this.showProgressbar = true
           this.totalProgress = ((index) / total) * 100
           this.corp_name = corp_name
@@ -100,5 +83,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

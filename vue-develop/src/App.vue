@@ -15,16 +15,6 @@
       </v-btn>
     </v-app-bar>
     <v-content>
-       <v-dialog v-model="error" persistent max-width="450">
-         <v-card>
-           <v-card-title>
-             Error
-           </v-card-title>
-           <v-card-text>
-             {{ error }}
-           </v-card-text>
-         </v-card>
-       </v-dialog>
       <v-banner v-if="newVersion" single-line>
         <v-icon slot="icon" color="warning" size="36">
           mdi-open-in-new
@@ -47,24 +37,29 @@
 
 <script>
 import DartForm from './components/DartForm'
-
+const VERSION = 'VERSION'
 export default {
   name: 'App',
   components: {
     DartForm
   },
-
+  sockets: {
+    [VERSION]({data}) {
+      this.version = data
+    }
+  },
   beforeCreate() {
     this.$store.dispatch('getGithubVersion')
-    this.$store.dispatch('getVersion')
-    this.$store.dispatch('getDirectory')
+    this.$socket.emit(VERSION)
+  },
+  data() {
+    return {
+      version: null
+    }
   },
   computed: {
     github_version() {
       return this.$store.state.github_version
-    },
-    version() {
-      return this.$store.state.version
     },
     newVersion() {
       let newVersion = false
@@ -84,12 +79,7 @@ export default {
         }
       }
       return newVersion
-    },
-    error() {
-      return this.$store.state.error
     }
   }
 }
 </script>
-
-<style></style>

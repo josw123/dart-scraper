@@ -10,7 +10,7 @@
     <v-card class="mx-auto" max-width="500">
       <v-sheet class="pa-4 primary lighten-2">
         <v-text-field
-          v-model="path"
+          v-model="base_path"
           label="Current Directory"
           prepend-icon="mdi-arrow-up-bold"
           dark
@@ -18,7 +18,7 @@
           solo-inverted
           hide-details
           @click:prepend="parentFolder"
-          @keydown.enter="itemClick(path)"
+          @keydown.enter="itemClick(base_path)"
         />
       </v-sheet>
       <v-card-text style="height:400px;overflow-y:auto">
@@ -49,7 +49,7 @@
     </v-card>
     </v-dialog>
     <v-text-field
-      v-model="path"
+      v-model="base_path"
       :rules="[folderRules.required]"
       append-outer-icon="mdi-folder"
       label="Download Folder"
@@ -62,13 +62,33 @@
 </template>
 
 <script>
+const DIRECTORY = 'DIRECTORY'
 export default {
-  beforeCreate() {},
+  beforeCreate() {
+    this.$socket.emit(DIRECTORY,{})
+  },
+  sockets: {
+    [DIRECTORY]({data}) {
+      const  { base_path, subdir} = data
+      this.base_path = base_path
+      this.subdir = subdir
+      this.$store.commit('setBasePath', base_path)
+      if (this.start_path === null) {
+        this.start_path = base_path
+      }
+    },
+    errors({type}) {
+      if (type === DIRECTORY) {
+        this.base_path = this.start_path
+      }
+    }
+  },
   data() {
     return {
       dialog: false,
       start_path: null,
-      path: null,
+      base_path: null,
+      subdir: null,
       selectedItem: 1,
       subDirItems: [],
       error: false,
@@ -79,49 +99,25 @@ export default {
   },
   methods: {
     parentFolder() {
-      const payload = { base_path: this.path, new_path: '..' }
-      this.$store.dispatch('getDirectory', payload)
+      const payload = { base_path: this.base_path, new_path: '..' }
+      this.$socket.emit(DIRECTORY, payload)
     },
     itemClick(path) {
       const payload = { base_path: path, new_path: null }
-      this.$store.dispatch('getDirectory', payload)
+      this.$socket.emit(DIRECTORY, payload)
     },
     setStartPath(path) {
       this.itemClick(path)
     },
     select() {
-      this.itemClick(this.path)
+      this.itemClick(this.base_path)
       this.dialog = false
     },
     cancel() {
       this.itemClick(this.start_path)
     }
   },
-  computed: {
-    basePath() {
-      return this.$store.state.base_path
-    },
-    basePathError() {
-      return this.$store.state.base_path_error
-    },
-    subdir() {
-      return this.$store.state.subdir
-    }
-  },
   watch: {
-    basePath(newValue) {
-      this.path = newValue
-      if (this.start_path === null) {
-        this.start_path = newValue
-      }
-    },
-    basePathError(newValue) {
-      if (newValue) {
-        this.path = this.basePath
-        this.error = true
-        this.$store.commit('setBasePathError', false)
-      }
-    },
     subdir(newValue) {
       this.subDirItems = newValue.map(v => {
         const dirNames = v.split(/\\|\//)

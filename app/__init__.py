@@ -7,7 +7,7 @@ from flask import Flask
 from flask_socketio import SocketIO
 
 # Version
-ver = 'v0.4.0a'
+ver = 'v0.4.0'
 
 # Configuration for frozen
 if getattr(sys, 'frozen', False):
@@ -39,7 +39,6 @@ socketio = SocketIO(app, cors_allowed_origins=cors_allowed_origins)
 
 from app import resource
 from app import cors
-from app import socketIo
 from app import api
 
 __all__ = ['app', 'ver', 'socketio', 'set_cors', 'cors_allowed_origins',
