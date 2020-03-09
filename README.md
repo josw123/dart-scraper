@@ -40,8 +40,8 @@
 
 ## 프로그램 테스트 환경
 
--   Windows 10 1903
--   macOS Mojave
+-   Windows 10
+-   macOS Catalina
 
 ## DART API 신청
 -   [Open DART](https://opendart.fss.or.kr/)에서 인증키 신청/관리
@@ -54,34 +54,17 @@
 
 ### macOS
 
-- dart_scraper.sh 다운로드
-
-- Terminal 실행 후 아래 명령어 입력(다운로드 폴더로 이동 후)
-
-```bash
-> bash dart_scraper.sh # 또는 sh dart_scraper.sh
-```
-
-![download1](./readme/install1.png)
-
-- 최초 실행 이후 DartScraper 폴더의 dart_scraper 파일 실행
-
-![download1](./readme/install2.png)
+- dart_scraper.app 다운로드 후 실행
 
 ## 프로그램 사용법
-
-![Console](./readme/console.png)
-
-- Dart Scraper 실행시 Local Webservice 실행
-
 
 ![Webpage](./readme/webpage.png)
 
 - DART API KEY 입력
 
-- 재무제표를 다운받을 회사 선택
+- 재무제표를 추출할 회사 검색 및 선택
 
-- 개별(Separate) / 별도(Consolidated) 재무제표 선택 (동시선택 가능)
+- 개별(Separate) / 별도(Consolidated) 재무제표 선택 (동시 선택 불가)
 
 - 연간보고서(Annual) / 반기보고서(Half) / 분기보고서(Quarter) 선택
 
@@ -91,14 +74,23 @@
 
 - 추출 시작일(Start Date) / 추츨 종료일(End Date)
 
-- 다운로드 폴더 경로(Download Folder)
+- 다운로드 폴더 경로(Download Folder) 선택
 
 ## 포트 변경
 
-- 기본 포트 5000 / 오류 발생시 아래와 같이 포트 변경
+- 기본 포트 5000
+- 오류 발생시 아래 설정 파일 변경
 
-``` bash
-> dart_scraper.exe -p 포트번호
-```
+### windows 10
 
-![Console](./readme/port.png)
+- 시작버튼-> Windows 시스템-> 실행
+- notepad %appdata%\dart-scraper\dart-setting.json 입력 후 확인
+- {"port": 포트_번호} 입력 후 저장 Ex) {"port": 8085}
+
+### macOS
+- Terminal 실행
+- vim ~/Library/Application\ Support/dart-scraper/dart-setting.json 입력 후 Enter
+- {"port": 포트_번호} 입력 후 저장 Ex) {"port": 8085}
+
+## License
+This project is licensed under the MIT License
