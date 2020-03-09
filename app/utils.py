@@ -32,12 +32,16 @@ def save_config_file(data):
     data: dict
         data to save
     """
+    config = read_config_file()
+    if config is None:
+        config = {}
+    new_data = {**config, **data}
     app_dir, config_path = get_config_path()
     if not os.path.exists(app_dir):
         os.makedirs(app_dir)
 
     with open(config_path, 'w') as config_file:
-        json.dump(data, config_file)
+        json.dump(new_data, config_file)
 
 
 def read_config_file():

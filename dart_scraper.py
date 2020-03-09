@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtGui import QIcon, QFont
 
 from app import socketio, app, set_cors
+from app.utils import read_config_file
 
 
 class MainWidget(QWidget):
@@ -67,7 +68,11 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
     port = args.get('port')
     if port is None:
-        port = 5000
+        config = read_config_file()
+        if config is not None:
+            port = int(config.get('port', 5000))
+        else:
+            port = 5000
 
     url = "http://127.0.0.1:{}".format(port)
     set_cors(url)
