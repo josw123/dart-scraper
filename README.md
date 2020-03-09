@@ -56,6 +56,17 @@
 
 - dart_scraper.app 다운로드 후 실행
 
+#### 확인할 수 없는 개발자 오류
+
+- 아래와 같은 확인할 수 없는 개발자 오류 발생시
+
+![error](./readme/error.png)
+
+- 시스템 환경설정 -> 보안 및 개인 정보 보호 -> 일반 -> 확인 없이 열기
+
+![settings](./readme/settings.png)
+
+
 ## 프로그램 사용법
 
 ![Webpage](./readme/webpage.png)
