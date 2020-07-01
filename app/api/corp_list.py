@@ -21,7 +21,6 @@ def get_corp_list():
         corp_list = cache.get('corp_list')
         if corp_list is None:
             corp_list = dart.get_corp_list()
-            corp_list.load()
         cache['corp_list'] = corp_list
     except APIKeyError as e:
         transmit.errors(CORP_LIST, str(e))
@@ -47,11 +46,13 @@ def corp_list_handler(data):
 
     corp_name = data.get('corp_name')
     exactly = data.get('exactly')
+    market = data.get('market', 'YKNE')
 
     if corp_name is None:
         transmit.errors(CORP_LIST, 'corp_name is None')
     else:
-        corps = corp_list.find_by_corp_name(corp_name=corp_name, exactly=exactly)
+        print(corp_name, market)
+        corps = corp_list.find_by_corp_name(corp_name=corp_name, exactly=exactly, market=market)
         if corps is None:
             corps = []
         transmit.data(CORP_LIST, [x.to_dict() for x in corps])

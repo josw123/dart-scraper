@@ -7,6 +7,11 @@
 [Download Link](https://github.com/josw123/dart-scraper/releases)
 
 ## Version History
+- v0.4.1
+  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.3.2 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.3.2))
+  - 코스피, 코스닥, 코덱스에 상장된 기업만 검색할 수 있는 옵션 추가
+  - 신규 상장된 기업의 재무제표 추출시 발상해는 오류 수정 ([dart-fss 오류 #28](https://github.com/josw123/dart-fss/issues/28))
+  
 - v0.4.0
   - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.3.0a 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.3.0a))
   - Open DART 및 DART 홈페이지 서비스 제한 방지를 위한 딜레이 추가([관련 공지사항](https://bit.ly/2wcnz2y>))

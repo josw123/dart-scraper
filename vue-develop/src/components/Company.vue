@@ -1,22 +1,42 @@
 <template>
-  <v-autocomplete
-    ref="cpAutocomplete"
-    v-model="cpList"
-    :items="companyItems"
-    :rules="[cpRules.required]"
-    :search-input.sync="search"
-    :loading="loading"
-    :disabled="apiKey === null"
-    label="Company Name"
-    item-text="corp_name"
-    item-value="corp_code"
-    clearable
-    chips
-    no-filter
-    return-object
-    required
-    multiple
-  />
+  <div style="text-align: center">
+    <v-btn-toggle
+        v-model="market"
+        multiple
+    >
+      <v-btn width="120px">
+        코스피
+      </v-btn>
+      <v-btn width="120px">
+        코스닥
+      </v-btn>
+      <v-btn width="120px">
+        코넥스
+      </v-btn>
+      <v-btn width="120px">
+        기타
+      </v-btn>
+    </v-btn-toggle>
+    <v-autocomplete
+        ref="cpAutocomplete"
+        v-model="cpList"
+        :items="companyItems"
+        :rules="[cpRules.required]"
+        :search-input.sync="search"
+        :loading="loading"
+        :disabled="apiKey === null"
+        label="Company Name"
+        item-text="corp_name"
+        item-value="corp_code"
+        clearable
+        chips
+        no-filter
+        return-object
+        required
+        multiple
+    />
+
+  </div>
 </template>
 
 <script>
@@ -26,11 +46,7 @@ export default {
     [CORP_LIST]({type, data}) {
       switch(type.toLowerCase()) {
         case 'loading':
-          if (data.toLowerCase() === 'start') {
-            this.loading = true
-          } else {
-            this.loading = false
-          }
+          this.loading = data.toLowerCase() === 'start';
           break
         case 'data':
           this.companyItems = [...this.cpList, ...data]
@@ -50,13 +66,20 @@ export default {
       cpRules: {
         required: value => value.length !== 0 || 'Required.'
       },
+      market:[0, 1,],
       timer: null
     }
   },
   methods: {
     requestList() {
       if (this.search.length > 1) {
-        const payload = { corp_name: this.search}
+        const market = this.market.map(v => {
+          const string = 'YKNE'
+          return string[v]
+        }).join('')
+
+
+        const payload = { corp_name: this.search, market: market}
         this.$socket.emit(CORP_LIST, payload)
       }
     }

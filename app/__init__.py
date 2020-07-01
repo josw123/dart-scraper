@@ -7,7 +7,7 @@ from flask import Flask
 from flask_socketio import SocketIO
 
 # Version
-ver = 'v0.4.0'
+ver = 'v0.4.1'
 
 # Configuration for frozen
 if getattr(sys, 'frozen', False):
