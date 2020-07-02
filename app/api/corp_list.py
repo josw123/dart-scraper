@@ -51,7 +51,6 @@ def corp_list_handler(data):
     if corp_name is None:
         transmit.errors(CORP_LIST, 'corp_name is None')
     else:
-        print(corp_name, market)
         corps = corp_list.find_by_corp_name(corp_name=corp_name, exactly=exactly, market=market)
         if corps is None:
             corps = []

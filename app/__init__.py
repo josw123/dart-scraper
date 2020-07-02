@@ -5,6 +5,7 @@ import os
 
 from flask import Flask
 from flask_socketio import SocketIO
+from engineio.async_drivers import threading
 
 # Version
 ver = 'v0.4.1'
@@ -35,7 +36,7 @@ def set_cors(url):
 
 
 # Generate SocketIo
-socketio = SocketIO(app, cors_allowed_origins=cors_allowed_origins)
+socketio = SocketIO(app, cors_allowed_origins=cors_allowed_origins, async_mode='threading')
 
 from app import resource
 from app import cors
