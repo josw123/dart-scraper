@@ -8,7 +8,7 @@ from flask_socketio import SocketIO
 from engineio.async_drivers import threading
 
 # Version
-ver = 'v0.4.1'
+ver = 'v0.4.2'
 
 # Configuration for frozen
 if getattr(sys, 'frozen', False):
