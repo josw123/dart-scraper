@@ -21,7 +21,7 @@ itsdangerous==1.1.0
 jdcal==1.4.1
 Jinja2==2.11.3
 log-symbols==0.0.14
-lxml==4.6.2
+lxml==4.6.3
 macholib==1.11
 MarkupSafe==1.1.1
 numpy==1.17.4
