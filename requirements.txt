@@ -48,7 +48,7 @@ spinners==0.0.23
 termcolor==1.1.0
 toml==0.10.0
 tqdm==4.39.0
-urllib3==1.25.7
+urllib3==1.25.8
 webencodings==0.5.1
 Werkzeug==0.16.0
 wincertstore==0.2
