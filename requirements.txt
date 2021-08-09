@@ -38,7 +38,7 @@ python-dateutil==2.8.1
 python-engineio==3.11.2
 python-socketio==4.4.0
 pytz==2019.3
-pywin32==227
+pywin32==301
 pywin32-ctypes==0.2.0
 requests==2.22.0
 sip==5.1.1
