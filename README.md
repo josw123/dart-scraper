@@ -7,6 +7,11 @@
 [Download Link](https://github.com/josw123/dart-scraper/releases)
 
 ## Version History
+- v0.4.3
+  - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.3.10 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.3.10))
+  - 일부 컬럼의 이름이 중복되는 문제로 인하여 발생하는 오류 해결(#20)
+  - 사업보고서제출기한연장신고서에 의해 발생하는 오류 수정([#64](https://github.com/josw123/dart-fss/issues/64))
+
 - v0.4.2
   - [Dart-Fss](https://github.com/josw123/dart-fss) 라이브러리 v0.3.4 사용 ([Update 정보](https://github.com/josw123/dart-fss/releases/tag/v0.3.4))
   - 'LG화학' 당기순이익(ifrs-full_ProfitLoss) 일부 추출 되지 않는 이슈 해결([#45](https://github.com/josw123/dart-fss/issues/45))
