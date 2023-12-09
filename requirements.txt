@@ -28,7 +28,7 @@ openpyxl==3.0.2
 packaging==20.3
 pefile==2019.4.18
 pycryptodome==3.8.2
-PyInstaller==3.6
+PyInstaller==5.13.1
 pyparsing==2.4.6
 PyQt5==5.14.1
 PyQt5-sip==12.7.1
